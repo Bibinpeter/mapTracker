@@ -1,11 +1,16 @@
+ 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+ 
 import 'package:fleet_map_tracker/helper/helper.dart';
-import 'package:fleet_map_tracker/screens/registerscreen.dart';
-import 'package:fleet_map_tracker/services/auth_service.dart';
+import 'package:fleet_map_tracker/screens/auth/forgottpass.dart';
+import 'package:fleet_map_tracker/screens/auth/registerscreen.dart';
+ import 'package:fleet_map_tracker/services/auth_service.dart';
 import 'package:fleet_map_tracker/services/database_service.dart';
 import 'package:fleet_map_tracker/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+ 
 import 'package:icons_plus/icons_plus.dart';
 
 class LoginPage extends StatefulWidget {
@@ -53,13 +58,13 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    );
+    ); 
   }
 
   Widget _buildTop() {
     return SizedBox(
-      width: mediaSize.width,
-      child: Column(
+      width: mediaSize.width,      
+      child: Column( 
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
@@ -197,7 +202,9 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
         TextButton(
-            onPressed: () {}, child: _buildGreyText("I forgot my password"))
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetPage(),));
+            }, child: _buildGreyText("I forgot my password"))
       ],
     );
   }
@@ -228,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                //  onTap: _handleGoogleSignIn,
+                 // onTap: _handleGoogleSignIn,
                 child: const Icon(
                   Bootstrap.google,
                   color: Colors.blueGrey,
@@ -275,4 +282,19 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+
+ // ignore: override_on_non_overriding_member
+//  Future signInWithGoogle() async {
+//   try{
+//     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+//     final GoogleSignInAuthentication? googleAuth=await googleUser?.authentication;
+//     final Credential=GoogleAuthProvider.credential(accessToken: googleAuth?.accessToken,idToken: googleAuth?.idToken);
+//     await FirebaseAuth.instance.signInWithCredential(Credential);
+//     final exist = await FirebaseStoreService.userIdExist();
+//     if (exist){
+//       return AuthService();
+//     }
+//   }
+//  }
+ 
 }

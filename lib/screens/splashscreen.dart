@@ -1,8 +1,8 @@
  
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fleet_map_tracker/screens/loginscreen.dart';
-import 'package:fleet_map_tracker/screens/mainscreen.dart';
+import 'package:fleet_map_tracker/screens/auth/loginscreen.dart';
+import 'package:fleet_map_tracker/screens/mapscreen.dart';
 import 'package:flutter/material.dart';
  
 
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.black,
       nextScreen: FirebaseAuth.instance.currentUser == null
           ? const LoginPage() 
-          : const Mainscreen(),
+          :  Map_Page(),
       splashIconSize: 500,
       duration: 2500,
       splashTransition: SplashTransition.fadeTransition,

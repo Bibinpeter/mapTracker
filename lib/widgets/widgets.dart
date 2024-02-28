@@ -1,7 +1,7 @@
 
 
-import 'package:fleet_map_tracker/screens/loginscreen.dart';
-import 'package:fleet_map_tracker/screens/mainscreen.dart';
+import 'package:fleet_map_tracker/screens/auth/loginscreen.dart';
+import 'package:fleet_map_tracker/screens/mapscreen.dart';
 import 'package:flutter/material.dart';
  
 
@@ -26,7 +26,7 @@ void nextScreen(context, page) {
 
 void nextScreenReplace(context, page, userId) {
   // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
-  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>   Mainscreen()),(Route)=>true);
+  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>Map_Page()),(Route)=>true);
 }
 
 void showSnackbar(context, color, message) {
