@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart'; // For obtaining current location
+import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
-class Map_Page extends StatefulWidget {
-  const Map_Page({Key? key}) : super(key: key);
+class MapPage extends StatefulWidget {
+  const MapPage({Key? key}) : super(key: key);
 
   @override
-  State<Map_Page> createState() => _Map_PageState();
+  State<MapPage> createState() => _MapPageState();
 }
 
-class _Map_PageState extends State<Map_Page> {
+class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
-  LatLng? _currentLocation; // Current location
-  List<LatLng> _locationHistory = []; // Location history data
+  LatLng? _currentLocation;
+  List<LatLng> _locationHistory = [];
   LatLng? _startPoint;
   LatLng? _endPoint;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
-    _fetchLocationHistory(); // Fetch location history from database
+    _fetchLocationHistory();
+    _startLocationUpdates();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -87,7 +95,6 @@ class _Map_PageState extends State<Map_Page> {
   }
 
   void _fetchLocationHistory() {
-    // Simulated location history data
     _locationHistory = [
       LatLng(37.422, -122.0848),
       LatLng(37.5, -122.1),
@@ -102,15 +109,29 @@ class _Map_PageState extends State<Map_Page> {
     }
   }
 
+  void _startLocationUpdates() {
+    _timer = Timer.periodic(Duration(minutes: 15), (timer) {
+      _saveLocation();
+    });
+  }
+
+  void _saveLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      _locationHistory.add(LatLng(position.latitude, position.longitude));
+    });
+  }
+
   void _playbackLocationHistory() async {
     if (_locationHistory.isNotEmpty) {
       final GoogleMapController controller = await _mapController.future;
       for (int i = 0; i < _locationHistory.length; i++) {
-        await Future.delayed(Duration(milliseconds: 1000)); // Decreased delay for smoother animation
+        await Future.delayed(Duration(milliseconds: 1000));
         await controller.animateCamera(
           CameraUpdate.newLatLngZoom(
             _locationHistory[i],
-            15, // Adjust zoom level if needed
+            15,
           ),
         );
       }

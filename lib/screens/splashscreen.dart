@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.black,
       nextScreen: FirebaseAuth.instance.currentUser == null
           ? const LoginPage() 
-          :  Map_Page(),
+          :  MapPage(),
       splashIconSize: 500,
       duration: 2500,
       splashTransition: SplashTransition.fadeTransition,
