@@ -10,6 +10,8 @@ import 'package:fleet_map_tracker/screens/auth/registerscreen.dart';
 import 'package:fleet_map_tracker/services/database_service.dart';
 import 'package:fleet_map_tracker/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+ 
  
 import 'package:icons_plus/icons_plus.dart';
 
@@ -231,11 +233,13 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           _buildGreyText("Or Login with"),
           const SizedBox(height: 10),
-          Row(
+          Row(   
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                 // onTap: _handleGoogleSignIn,
+                 onTap: (){
+                  GoogleSignIn();     
+                 },
                 child: const Icon(
                   Bootstrap.google,
                   color: Colors.blueGrey,
@@ -284,17 +288,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
  // ignore: override_on_non_overriding_member
-//  Future signInWithGoogle() async {
-//   try{
-//     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-//     final GoogleSignInAuthentication? googleAuth=await googleUser?.authentication;
-//     final Credential=GoogleAuthProvider.credential(accessToken: googleAuth?.accessToken,idToken: googleAuth?.idToken);
-//     await FirebaseAuth.instance.signInWithCredential(Credential);
-//     final exist = await FirebaseStoreService.userIdExist();
-//     if (exist){
-//       return AuthService();
-//     }
-//   }
-//  }
+  Future<UserCredential> signInWithGoogle() async {
+  try {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) throw Exception('Google Sign-In failed.');
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    return userCredential;
+  } catch (error) {
+    throw error;
+  }
+}
+
  
 }

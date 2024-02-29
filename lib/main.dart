@@ -2,14 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fleet_map_tracker/firebase_options.dart';
 import 'package:fleet_map_tracker/screens/splashscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await getDatabasesPath();
   runApp(const MyApp());
 }
+
+ 
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
